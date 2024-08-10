@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Pesaje Pedidos</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Pesaje Pedidos</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Libras</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Conversor</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">...</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container1">
+        <div class="card">
+          <div class="front">Ver Precio Libra<i class="fa-solid fa-circle-arrow-right pl-1"></i></div>
+          <div class="back">1 LB = $6.50</div>
+        </div>
+    </div>
+    
+    <div class="container pt-3">
+        
+        <div class="row">
+            <div class="col-md-12">
+                <form id="form"> 
+                    <div class="form-group">
+                        <label for="peso">Peso</label>
+                        <input type="text" class="form-control" id="peso" name="peso" placeholder="Peso (g)">
+                        <small id="pesoHelp" class="pb-1 form-text text-muted">¡Ingrese el peso del pedido en gramos!</small>
+                        <button type="submit" class="btn btn-primary">Cotizar</button>
+                    </div>
+                </form>
+            
+                <div class="table-responsive pt-3"> 
+                    <table id="tablaResultados" class="table table-striped table-bordered" style="display: none;"> 
+                        <tr>
+                            <th>Peso por producto</th> 
+                            <th>Total Gramos</th>
+                            <th>Total Libras</th>
+                            <th>Total a Pagar</th>
+                        </tr>
+                        <tr>
+                            <td id="pesoPedidos"></td> 
+                            <td id="totalGramos"></td>
+                            <td id="totalLibras"></td>
+                            <td id="totalPagar"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+            <script src="js/main.js"></script>
+    </body>
+</html>
