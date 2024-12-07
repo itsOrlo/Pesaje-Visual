@@ -1,84 +1,106 @@
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Pesaje Pedidos</title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/styles.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-
     </head>
-    <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Pesaje Pedidos</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Libras</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Conversor</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">...</a>
-                </li>
-            </ul>
+    <body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-weight mr-2"></i>Pesaje Pedidos
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Libras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Conversor</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
     
-    <div class="container1">
-        <div class="card">
-          <div class="front">Ver Precio Libra<i class="fa-solid fa-circle-arrow-right pl-1"></i></div>
-          <div class="back">1 LB = $6.50</div>
+    <div class="container py-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="text-info mb-3">Precio por Libra</h5>
+                <div>
+                    <span class="display-4">$6.50</span>
+                    <small class="text-muted">/LB</small>
+                </div>
+            </div>
         </div>
     </div>
     
-    <div class="container pt-3">
-        
-        <div class="row">
-            <div class="col-md-12">
-                <form id="form"> 
-                    <div class="form-group">
-                        <label for="peso">Peso</label>
-                        <input type="text" class="form-control" id="peso" name="peso" placeholder="Peso (g)">
-                        <small id="pesoHelp" class="pb-1 form-text text-muted">¡Ingrese el peso del pedido en gramos!</small>
-                        <button type="submit" class="btn btn-primary">Cotizar</button>
+    <div class="container py-3">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h4 class="card-title text-center mb-4">Calcular Precio</h4>
+                        <form id="form"> 
+                            <div class="form-group">
+                                <label for="peso">Peso del Pedido</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="peso" name="peso" placeholder="Ingrese el peso">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">gramos</span>
+                                    </div>
+                                </div>
+                                <small id="pesoHelp" class="form-text text-muted">Ingrese el peso del pedido en gramos</small>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-info flex-grow-1">
+                                    <i class="fas fa-calculator mr-2"></i>Calcular Precio
+                                </button>
+                                <button type="button" id="btnReiniciar" class="btn btn-secondary flex-grow-1 ml-2">
+                                    <i class="fas fa-redo mr-2"></i>Reiniciar
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            
-                <div class="table-responsive pt-3"> 
-                    <table id="tablaResultados" class="table table-striped table-bordered" style="display: none;"> 
-                        <tr>
-                            <th>Peso por producto</th> 
-                            <th>Total Gramos</th>
-                            <th>Total Libras</th>
-                            <th>Total a Pagar</th>
-                        </tr>
-                        <tr>
-                            <td id="pesoPedidos"></td> 
-                            <td id="totalGramos"></td>
-                            <td id="totalLibras"></td>
-                            <td id="totalPagar"></td>
-                        </tr>
+                </div>
+                
+                <div class="table-responsive pt-4"> 
+                    <table id="tablaResultados" class="table bg-white" style="display: none;"> 
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th>Peso por producto</th> 
+                                <th>Total Gramos</th>
+                                <th>Total Libras</th>
+                                <th>Total a Pagar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="pesoPedidos"></td> 
+                                <td id="totalGramos"></td>
+                                <td id="totalLibras"></td>
+                                <td id="totalPagar" class="font-weight-bold"></td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
 
-            
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-            <script src="js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
     </body>
 </html>
