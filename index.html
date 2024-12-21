@@ -57,10 +57,13 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="peso" name="peso" placeholder="Ingrese el peso">
                                     <div class="input-group-append">
-                                        <span class="input-group-text">gramos</span>
+                                        <select class="custom-select" id="unidadMedida">
+                                            <option value="gramos">gramos</option>
+                                            <option value="libras">libras</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <small id="pesoHelp" class="form-text text-muted">Ingrese el peso del pedido en gramos</small>
+                                <small id="pesoHelp" class="form-text text-muted">Ingrese el peso en gramos o libras</small>
                             </div>
                             <div class="d-flex gap-2">
                                 <button type="submit" class="btn btn-info flex-grow-1">

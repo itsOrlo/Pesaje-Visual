@@ -31,36 +31,50 @@ let productos = [];
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const gramos = parseFloat(document.getElementById('peso').value);
+    const peso = parseFloat(document.getElementById('peso').value);
+    const unidad = document.getElementById('unidadMedida').value;
 
-    if (isNaN(gramos)) {
+    if (isNaN(peso)) {
         alert("Por favor, ingrese un valor numérico válido para el peso.");
         return;
     }
 
-    productos.push({ nombre: `Producto ${productos.length + 1}`, gramos });
+    let gramos, libras;
 
-    const libras = gramos / 453.59237;
+    if (unidad === 'gramos') {
+        gramos = peso;
+        libras = peso / 453.59237;
+    } else {
+        libras = peso;
+        gramos = peso * 453.59237;
+    }
+
+    productos.push({ 
+        nombre: `Producto ${productos.length + 1}`, 
+        gramos: gramos.toFixed(2),
+        libras: libras.toFixed(2) 
+    });
+
     const precioPorLibra = 6.50;
     let totalPagar = libras * precioPorLibra;
     
-    if (totalPagar < 3) {
-        totalPagar = 3;
-    }
-
     totalGramosAcumulado += gramos;
     totalLibrasAcumulado += libras;
     totalPagarAcumulado += totalPagar;
 
-    // Actualizar la celda "Peso de Pedidos" con saltos de línea
-    const listaProductos = productos.map(p => `${p.nombre}: ${p.gramos}g<br>`).join(''); 
-    document.getElementById('pesoPedidos').innerHTML = listaProductos; 
-
-    document.getElementById('totalGramos').textContent = totalGramosAcumulado;
+    const totalPagarMostrar = totalPagarAcumulado < 3 ? 3 : totalPagarAcumulado;
+    
+    // Actualizar la visualización con ambas unidades
+    const listaProductos = productos.map(p => 
+        `${p.nombre}: ${p.gramos}g (${p.libras}lb)<br>`
+    ).join('');
+    
+    document.getElementById('pesoPedidos').innerHTML = listaProductos;
+    document.getElementById('totalGramos').textContent = totalGramosAcumulado.toFixed(2);
     document.getElementById('totalLibras').textContent = totalLibrasAcumulado.toFixed(2);
-    document.getElementById('totalPagar').textContent = '$' + totalPagarAcumulado.toFixed(2);
+    document.getElementById('totalPagar').textContent = '$' + totalPagarMostrar.toFixed(2);
 
-    tablaResultados.style.display = 'table'; 
+    tablaResultados.style.display = 'table';
     document.getElementById('peso').value = '';
 });
 
