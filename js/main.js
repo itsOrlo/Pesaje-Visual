@@ -28,6 +28,41 @@ let totalLibrasAcumulado = 0;
 let totalPagarAcumulado = 0;
 let productos = [];
 
+const tipoClienteSwitch = document.getElementById('tipoClienteSwitch');
+const precioPorLibraElement = document.getElementById('precioPorLibra');
+let precioPorLibra = 6.50; // Precio predeterminado para clientes
+
+// Actualizar el precio cuando cambia el switch
+tipoClienteSwitch.addEventListener('change', function() {
+    if (this.checked) {
+        // Socio
+        precioPorLibra = 5.50;
+        precioPorLibraElement.textContent = '$5.50';
+    } else {
+        // Cliente normal
+        precioPorLibra = 6.50;
+        precioPorLibraElement.textContent = '$6.50';
+    }
+    
+    // Si hay productos en la lista, recalcular el total
+    if (productos.length > 0) {
+        recalcularTotal();
+    }
+});
+
+// Función para recalcular el total cuando cambia el tipo de cliente
+function recalcularTotal() {
+    totalPagarAcumulado = 0;
+    
+    productos.forEach(producto => {
+        let libras = parseFloat(producto.libras);
+        totalPagarAcumulado += libras * precioPorLibra;
+    });
+    
+    const totalPagarMostrar = totalPagarAcumulado < 3 ? 3 : totalPagarAcumulado;
+    document.getElementById('totalPagar').textContent = '$' + totalPagarMostrar.toFixed(2);
+}
+
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -55,7 +90,7 @@ form.addEventListener('submit', (event) => {
         libras: libras.toFixed(2) 
     });
 
-    const precioPorLibra = 6.50;
+    // Usar el precio que corresponde al tipo de cliente
     let totalPagar = libras * precioPorLibra;
     
     totalGramosAcumulado += gramos;

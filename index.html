@@ -7,7 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    </head>
+        <link rel="stylesheet" href="css/styles.css">
+        </head>
     <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-info">
         <div class="container">
@@ -38,7 +39,7 @@
             <div class="card-body">
                 <h5 class="text-info mb-3">Precio por Libra</h5>
                 <div>
-                    <span class="display-4">$6.50</span>
+                    <span class="display-4" id="precioPorLibra">$6.50</span>
                     <small class="text-muted">/LB</small>
                 </div>
             </div>
@@ -51,6 +52,16 @@
                 <div class="card">
                     <div class="card-body p-4">
                         <h4 class="card-title text-center mb-4">Calcular Precio</h4>
+                        
+                        <div class="d-flex justify-content-center align-items-center mb-4">
+                            <span class="tipo-cliente-label mr-2">Cliente</span>
+                            <label class="switch">
+                                <input type="checkbox" id="tipoClienteSwitch">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="tipo-cliente-label ml-2">Socio</span>
+                        </div>
+                        
                         <form id="form"> 
                             <div class="form-group">
                                 <label for="peso">Peso del Pedido</label>
