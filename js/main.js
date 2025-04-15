@@ -111,6 +111,12 @@ form.addEventListener('submit', (event) => {
 
     tablaResultados.style.display = 'table';
     document.getElementById('peso').value = '';
+
+    // Al final del código existente del evento submit
+    mostrarBotonesCompartir();
+
+    // Mostrar botones de compartir
+    botonesCompartir.style.display = 'flex';
 });
 
 btnReiniciar.addEventListener('click', (event) => {
@@ -128,4 +134,163 @@ btnReiniciar.addEventListener('click', (event) => {
 
     tablaResultados.style.display = 'none';
     document.getElementById('peso').value = '';
+
+    // Al final del código existente del evento click
+    botonesCompartir.style.display = 'none';
+    botonesCompartir.classList.remove('d-flex');
+    botonesCompartir.classList.add('d-none');
+
+    // Ocultar botones de compartir
+    botonesCompartir.style.display = 'none';
 });
+
+// Elementos para compartir
+const btnCompartir = document.getElementById('btnCompartir');
+const btnDescargar = document.getElementById('btnDescargar');
+const botonesCompartir = document.getElementById('botonesCompartir');
+
+// Función para mostrar los botones de compartir cuando aparezca la tabla
+function mostrarBotonesCompartir() {
+    if (tablaResultados.style.display === 'table') {
+        botonesCompartir.style.display = 'flex !important';
+        botonesCompartir.classList.remove('d-none');
+        botonesCompartir.classList.add('d-flex');
+    } else {
+        botonesCompartir.style.display = 'none !important';
+        botonesCompartir.classList.remove('d-flex');
+        botonesCompartir.classList.add('d-none');
+    }
+}
+
+// Función para generar la nota de venta como un elemento HTML
+function generarNotaVenta() {
+    // Crear un contenedor para la nota
+    const notaVenta = document.createElement('div');
+    notaVenta.className = 'nota-venta';
+    
+    // Cabecera de la nota
+    const header = document.createElement('div');
+    header.className = 'nota-header';
+    header.innerHTML = `
+        <h3>Pesaje Pedidos</h3>
+        <p>Nota de Venta</p>
+        <p>${new Date().toLocaleDateString('es-ES')} ${new Date().toLocaleTimeString('es-ES')}</p>
+        <p>Tipo de cliente: ${tipoClienteSwitch.checked ? 'Socio' : 'Cliente'}</p>
+    `;
+    
+    // Clonar la tabla de resultados
+    const tabla = tablaResultados.cloneNode(true);
+    tabla.style.display = 'table';
+    tabla.classList.add('table-bordered');
+    
+    // Pie de nota
+    const footer = document.createElement('div');
+    footer.className = 'nota-footer';
+    footer.innerHTML = `
+        <p>Gracias por su compra</p>
+        <p>Precio por libra: ${precioPorLibraElement.textContent}</p>
+    `;
+    
+    // Ensamblar la nota
+    notaVenta.appendChild(header);
+    notaVenta.appendChild(tabla);
+    notaVenta.appendChild(footer);
+    
+    return notaVenta;
+}
+
+// Función para capturar la nota como imagen
+async function capturarNotaComoImagen() {
+    const notaVenta = generarNotaVenta();
+    
+    // Añadir temporalmente al DOM para capturar
+    document.body.appendChild(notaVenta);
+    
+    try {
+        const canvas = await html2canvas(notaVenta, {
+            scale: 2, // Mayor calidad
+            backgroundColor: '#ffffff',
+            logging: false
+        });
+        
+        document.body.removeChild(notaVenta);
+        return canvas;
+    } catch (error) {
+        console.error('Error al capturar la nota:', error);
+        document.body.removeChild(notaVenta);
+        throw error;
+    }
+}
+
+// Función para compartir la nota como imagen
+async function compartirNota() {
+    try {
+        const canvas = await capturarNotaComoImagen();
+        
+        // Convertir canvas a blob
+        const blob = await new Promise(resolve => {
+            canvas.toBlob(resolve, 'image/png');
+        });
+        
+        // Verificar si la API Web Share está disponible
+        if (navigator.share) {
+            const file = new File([blob], 'nota-pesaje.png', { type: 'image/png' });
+            
+            await navigator.share({
+                title: 'Nota de Pesaje',
+                text: 'Aquí está tu nota de pesaje',
+                files: [file]
+            });
+        } else {
+            // Alternativa para navegadores que no soportan Web Share API
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'nota-pesaje.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    } catch (error) {
+        console.error('Error al compartir:', error);
+        alert('No se pudo compartir la nota. Intente descargarla.');
+    }
+}
+
+// Función para descargar la nota como PDF
+async function descargarNota() {
+    try {
+        const canvas = await capturarNotaComoImagen();
+        const imgData = canvas.toDataURL('image/png');
+        
+        // Usar jsPDF para crear un PDF
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+        
+        // Calcular dimensiones para ajustar la imagen al PDF
+        const imgWidth = 210 - 20; // A4 width (210mm) - margins
+        const imgHeight = canvas.height * imgWidth / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+        pdf.save('nota-pesaje.pdf');
+    } catch (error) {
+        console.error('Error al descargar:', error);
+        alert('No se pudo descargar la nota como PDF. Intente compartirla como imagen.');
+        
+        // Intentar descargar como imagen si falla el PDF
+        try {
+            await compartirNota();
+        } catch (e) {
+            console.error('Error al intentar alternativa:', e);
+        }
+    }
+}
+
+// Eventos para los botones de compartir y descargar
+btnCompartir.addEventListener('click', compartirNota);
+btnDescargar.addEventListener('click', descargarNota);
